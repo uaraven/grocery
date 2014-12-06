@@ -8,7 +8,7 @@ class History(models.Model):
 class List(models.Model):
     is_done = models.BooleanField(default=False)
     title = models.ForeignKey(to=History)
-    due_date = models.DateField()
+    due_date = models.DateTimeField()
 
     def name(self):
         return self.title.record_name

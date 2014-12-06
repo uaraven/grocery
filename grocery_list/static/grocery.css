@@ -1,0 +1,46 @@
+@import url(http://fonts.googleapis.com/css?family=Cabin);
+
+html {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    font-family: 'Cabin', sans-serif;
+    font-size: 16pt;
+}
+
+div.content {
+    margin: auto;
+    width: 900px;
+    background-color: antiquewhite;
+}
+
+div.header {
+    background-color: beige;
+    font-weight: bold;
+}
+
+div.check {
+    text-align: center;
+    width: 100px;
+    display: inline-block;
+}
+
+div.name {
+    text-align: center;
+    width: 650px;
+    display: inline-block;
+}
+
+div.due {
+    text-align: center;
+    width: 140px;
+    display: inline-block;
+}
+
+input#new_list_item {
+    display: inline-block;
+    width: 90%
+}
+

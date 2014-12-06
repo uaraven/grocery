@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang=en>
+<meta charset=utf-8>
+
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static "grocery.css" %}"/>
+<script src="{% static "grocery.js" %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static "jquery-2.1.1.min.js" %}"></script>
+<script src="{% static "jquery.cookie.js" %}"></script>
+<script src="{% static "jquery.djangocsrf.js" %}"></script>
+<title>Grocery List</title>
+
+<body>
+<div class="content">
+    <div class="header">
+        <div class="check">Done</div>
+        <div class="name">What</div>
+        <div class="due"><input id="add_btn" type="button" value="Add" onclick="add_new_item()"></div>
+    </div>
+    <div class="menu">
+
+    </div>
+    <div id="list">
+    </div>
+    <div id="add" style="display: none">
+        <input id="new_list_item" type="text">
+        <input id="new_list_add" type="button" value="Save" onclick="save_new_item()">
+    </div>
+</div>
+<script lang="text/javascript">
+    init();
+    load_grocery_list()
+</script>
+</body>

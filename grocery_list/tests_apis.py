@@ -2,11 +2,9 @@ import datetime
 import json
 
 from django.http.request import HttpRequest
-
 from django.test.testcases import TestCase
 
 from grocery_list import api_views
-
 from grocery_list.models import List
 
 
@@ -36,10 +34,7 @@ class ApiTest(TestCase):
         self.assertEqual(result[1]['title'], 'List item 2', "Should contain correct second element")
 
     def test_add_list_item_should_add_item_to_db(self):
-        request = HttpRequest()
-        request.method = 'POST'
-        request.META['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
-        request._body = '[{"title": "List item 3", "due": "2014-12-22"}]'
+        request = self._create_request(b'[{"title": "List item 3", "due": "2014-12-22"}]')
 
         response = api_views.add_list_item(request)
 
@@ -49,7 +44,9 @@ class ApiTest(TestCase):
     def test_set_done_to_true_should_be_reflected_in_db(self):
         id = str(List.objects.get(title__record_name='List item 1').id)
 
-        response = api_views.set_done(None, id, 'true')
+        request = self._create_request('{"id":%s, "checked":true}' % id)
+
+        response = api_views.set_done(request)
 
         self.assertEqual(response.status_code, 200, "add_list_item should execute successfully")
         self.assertTrue(List.objects.get(title__record_name='List item 1').is_done, 'Should be set to completed')
@@ -59,7 +56,30 @@ class ApiTest(TestCase):
         item.is_done = True
         item.save()
 
-        response = api_views.set_done(None, str(item.id), 'false')
+        request = self._create_request('{"id":%s, "checked":false}' % item.id)
+
+        response = api_views.set_done(request)
 
         self.assertEqual(response.status_code, 200, "add_list_item should execute successfully")
         self.assertFalse(List.objects.get(title__record_name='List item 1').is_done, 'Should be set to completed')
+
+    def test_add_should_fail_when_no_json_request(self):
+        request = HttpRequest()
+
+        response = api_views.add_list_item(request)
+
+        self.assertEqual(response.status_code, 400, "Response should be 'Bad request'")
+
+    def test_set_done_should_fail_when_no_json_request(self):
+        request = HttpRequest()
+
+        response = api_views.set_done(request)
+
+        self.assertEqual(response.status_code, 400, "Response should be 'Bad request'")
+
+    def _create_request(self, json):
+        request = HttpRequest()
+        request.method = 'POST'
+        request.META['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
+        request._body = json
+        return request
