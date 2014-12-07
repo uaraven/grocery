@@ -2,6 +2,10 @@ function init() {
     $.djangocsrf("enable"); // does not work for some reason
 
     $('#new_list_item').keyup(update_suggestions)
+
+    $('#new_item_due').datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
 }
 
 function update_suggestions() {
@@ -41,14 +45,20 @@ function load_grocery_list() {
 }
 
 function create_list_item(list_item) {
+    // stupid hack to make date behave naively, without timezones
+    var now = new Date();
+    var dt = new Date(Date.parse(list_item.due) + now.getTimezoneOffset() * 60 * 1000);
+
     $('#list').append("<div class='line-" + list_item.id + "'>" +
-    "   <div class='check'><input type='checkbox' value='" + list_item.done + " onclick='check_click(" + list_item.id + ")'></div>" +
-    "   <div class='name'>" + list_item.title + "</div>" +
-        //"   <div class='due'>" + list_item.due + "</div>" +
-    "<div id='delete-" + list_item.id + "' class='button2'>" +
+    "<div class='check'><input id='check-" + list_item.id + "' type='checkbox' onclick='check_click(" + list_item.id + ")'></div>" +
+    "<div class='name'>" + list_item.title + "</div>" +
+    "<div class='due'>" + $.datepicker.formatDate('yy-mm-dd', dt) + "</div>" +
+    "<div id='delete-" + list_item.id + "' class='action button2'>" +
     "<img src='/static/img/delete.png' width ='25' height='28' onclick='delete_item(" + list_item.id + ")' title='Delete'>" +
     "</div>" +
     "</div>");
+
+    $('#check-' + list_item.id).prop('checked', list_item.done);
 
     $('#line-' + list_item.id).hover(function () {
             $('#delete-' + list_item.id).show();
@@ -56,6 +66,20 @@ function create_list_item(list_item) {
         function () {
             $('#delete-' + list_item.id).hide();
         })
+}
+
+function check_click(id) {
+    var check = $('#check-' + id).prop('checked');
+    $.ajax({
+        url: 'api/done',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({'id': id, checked: check}),
+        processData: false,
+        success: function () {
+            load_grocery_list();
+        }
+    })
 }
 
 function delete_item(id) {
@@ -80,13 +104,15 @@ function cancel_new_item() {
 function add_new_item() {
     $('#add_btn').attr('disabled', 'disabled');
     $('#add').show();
+    $('#new_item_due').val($.datepicker.formatDate('yy-mm-dd', new Date()));
     $('#new_list_item').focus()
 }
 
 function save_new_item() {
     var list_item_title = $('#new_list_item').val();
+    var due = $('#new_item_due').val();
 
-    var list_item = [{'title': list_item_title, 'due': new Date().toJSON()}];
+    var list_item = [{'title': list_item_title, 'due': due}];
 
     $('#new_list_add').attr('disabled', 'disabled');
     $.ajax({

@@ -13,13 +13,13 @@ body {
 div.content {
     margin: auto;
     width: 900px;
-    background-color: antiquewhite;
 }
 
 div.header {
     background-color: beige;
     font-weight: bold;
     padding: 5px;
+    border-bottom: solid 1px black;
 }
 
 .title {
@@ -33,7 +33,7 @@ div.check {
 }
 
 div.name {
-    width: 650px;
+    width: 600px;
     display: inline-block;
 }
 
@@ -43,17 +43,31 @@ div.due {
     text-align: center;
 }
 
+div.action {
+    width: 40px;
+    display: inline-block;
+    text-align: center;
+}
+
 input#new_list_item {
     display: inline-block;
-    width: 80%;
+    width: 70%;
+    height: 30px;
+    vertical-align: middle;
+}
+
+input#new_item_due {
+    display: inline-block;
+    width: 10%;
     height: 30px;
     vertical-align: middle;
 }
 
 div#empty {
-    margin: 2em;
+    padding: 2em;
     text-align: center;
     display: none;
+    background-color: coral;
 }
 
 div.button {

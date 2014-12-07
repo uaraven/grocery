@@ -18,29 +18,25 @@
     <div class="header">
         <div class="check title">Done</div>
         <div class="name title">What</div>
-        <div class="due title">
-            <div id="add_btn" class="button">
-                <img src="/static/img/add.png" width="28" height="28" onclick="add_new_item()" title="Add item">
-            </div>
-            {#            <input id="add_btn" type="button" value="Add" onclick="add_new_item()"></div>#}
+        <div class="due title">Due</div>
+        <div class="action title" id="add_btn" class="button">
+            <img src="/static/img/add.png" width="28" height="28" onclick="add_new_item()" title="Add item">
         </div>
-        <div class="menu">
+    </div>
+    <div id="list">
+    </div>
+    <div id="empty">
+        No items
+    </div>
+    <div id="add" style="display: none;">
+        <input id="new_list_item" type="text" placeholder="Name">
+        <input id="new_item_due" type="text" placeholder="Due date">
 
+        <div id="new_list_add" class="button">
+            <img src="/static/img/accept.png" width="25" height="28" onclick="save_new_item()" title="Save">
         </div>
-        <div id="list">
-        </div>
-        <div id="empty">
-            No items
-        </div>
-        <div id="add" style="display: none;">
-            <input id="new_list_item" type="text">
-
-            <div id="new_list_add" class="button">
-                <img src="/static/img/accept.png" width="25" height="28" onclick="save_new_item()" title="Save">
-            </div>
-            <div id="new_list_cancel" class="button">
-                <img src="/static/img/cancel.png" width="25" height="28" onclick="cancel_new_item()" title="Cancel">
-            </div>
+        <div id="new_list_cancel" class="button">
+            <img src="/static/img/cancel.png" width="25" height="28" onclick="cancel_new_item()" title="Cancel">
         </div>
     </div>
     <script lang="text/javascript">

@@ -1,11 +1,13 @@
 import datetime
 import json
 
+from django.core.exceptions import ObjectDoesNotExist
+
 from django.http.request import HttpRequest
 from django.test.testcases import TestCase
 
 from grocery_list import api_views
-from grocery_list.models import List
+from grocery_list.models import List, History
 
 
 class ApiTest(TestCase):
@@ -34,7 +36,7 @@ class ApiTest(TestCase):
         self.assertEqual(result[1]['title'], 'List item 2', "Should contain correct second element")
 
     def test_add_list_item_should_add_item_to_db(self):
-        request = self._create_request(b'[{"title": "List item 3", "due": "2014-12-22"}]')
+        request = self._create_request('[{"title": "List item 3", "due": "2014-12-22"}]')
 
         response = api_views.add_list_item(request)
 
@@ -77,9 +79,32 @@ class ApiTest(TestCase):
 
         self.assertEqual(response.status_code, 400, "Response should be 'Bad request'")
 
+    def test_should_provide_suggestions(self):
+        History.objects.create(record_name="Suggested")
+        History.objects.create(record_name="Not suggested")
+        request = self._create_request('{"text": "Su"}')
+
+        response = api_views.suggest(request)
+
+        result = json.loads(response.content.decode('utf-8'))
+
+        self.assertEqual(response.status_code, 200, "Response should contain success")
+        self.assertEqual(result, ["Suggested"], "Response should contain success")
+
+    def test_should_delete_list_item(self):
+        id = List.objects.get(title__record_name='List item 1').id
+
+        request = self._create_request('{"id": %s}' % str(id))
+
+        response = api_views.delete(request)
+
+        self.assertEqual(response.status_code, 200, "Response should contain success")
+        with self.assertRaises(ObjectDoesNotExist):
+            List.objects.get(id=id)
+
     def _create_request(self, json):
         request = HttpRequest()
         request.method = 'POST'
         request.META['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
-        request._body = json
+        request._body = json.encode('utf-8')
         return request
