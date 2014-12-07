@@ -29,7 +29,9 @@ I am neither Web-designer nor Javascript developer, so web interface is quite ru
 
 Features to be added
 --------------------
- 
+  - Proper error handling:
+   - On UI do not allow user to store empty title or invalid date
+   - On a server side generate meaningful error messages and return them to UI in HTTP response.
   - Authentication. I initially added Django auth module, but did not implemented authentication, because I already missed all deadlines.
   - API Key support for APIs. Also Web page to generate API keys for users. Currently APIs are unprotected and open to the world.
   - Mobile client. Should be pretty easy with JSON APIs available.
