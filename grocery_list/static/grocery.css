@@ -19,28 +19,66 @@ div.content {
 div.header {
     background-color: beige;
     font-weight: bold;
+    padding: 5px;
+}
+
+.title {
+    text-align: center;
 }
 
 div.check {
-    text-align: center;
     width: 100px;
+    text-align: center;
     display: inline-block;
 }
 
 div.name {
-    text-align: center;
     width: 650px;
     display: inline-block;
 }
 
 div.due {
-    text-align: center;
-    width: 140px;
+    width: 130px;
     display: inline-block;
+    text-align: center;
 }
 
 input#new_list_item {
     display: inline-block;
-    width: 90%
+    width: 80%;
+    height: 30px;
+    vertical-align: middle;
 }
 
+div#empty {
+    margin: 2em;
+    text-align: center;
+    display: none;
+}
+
+div.button {
+    background: rgba(0, 0, 0, 0);
+    border: solid 1px darkblue;
+    width: 40px;
+    height: 30px;
+    text-align: center;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+div.button:active {
+    background: skyblue;
+}
+
+div.button2 {
+    background: rgba(0, 0, 0, 0);
+    width: 40px;
+    height: 30px;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+}
+
+div.button2:active {
+    background: skyblue;
+}
