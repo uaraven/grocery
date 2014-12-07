@@ -13,6 +13,9 @@ class List(models.Model):
     def name(self):
         return self.title.record_name
 
+    def __str__(self):
+        return "{Title: %s, Due: %s, Done: %s}" % (self.title.record_name, str(self.due_date), str(self.is_done))
+
     @staticmethod
     def add(title, due_date):
         """
