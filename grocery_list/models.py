@@ -15,6 +15,14 @@ class List(models.Model):
 
     @staticmethod
     def add(title, due_date):
+        """
+        Utility method to add new list item.
+
+        Will look through history to find if such title was used before and will create new title in history otherwise.
+        :param title: Grocery list title
+        :param due_date: Due date for an item
+        :return: newly created list item
+        """
         history = History.objects.filter(record_name=title)
         if len(history) == 0:
             history_item = History.objects.create(record_name=title)

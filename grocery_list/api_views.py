@@ -26,8 +26,8 @@ def add_list_item(request):
                 List.add(list_item['title'], dt)
 
             return HttpResponse('')
-        except Exception as e:
-            raise e
+        except:
+            pass
     return HttpResponseBadRequest("Bad request")
 
 

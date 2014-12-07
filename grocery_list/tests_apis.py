@@ -22,7 +22,7 @@ class ApiTest(TestCase):
     def test_get_list_should_respond_with_json(self):
         response = api_views.get_list(None)
 
-        # May be Django version specific
+        # WARNING: May be Django version specific
         self.assertEqual(response._headers['content-type'][1], 'application/json')
         self.assertEqual(response.status_code, 200, "get_list should execute successfully")
 
@@ -102,6 +102,7 @@ class ApiTest(TestCase):
         with self.assertRaises(ObjectDoesNotExist):
             List.objects.get(id=id)
 
+    # WARNING: May be Django version specific
     def _create_request(self, json):
         request = HttpRequest()
         request.method = 'POST'

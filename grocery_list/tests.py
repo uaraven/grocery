@@ -1,6 +1,6 @@
-from django.test.testcases import TestCase
-
 from datetime import date
+
+from django.test.testcases import TestCase
 
 from grocery_list.models import History
 from grocery_list.models import List
