@@ -10,11 +10,14 @@ from grocery_list.models import List, History
 
 @csrf_exempt
 def get_list(request):
-    items = List.objects.all().order_by('due_date')
-    jsonized = [{'id': i.id, 'title': i.name(), 'done': i.is_done,
-                 'due': i.due_date.strftime('%Y-%m-%d')} for i in items]
-    return JsonResponse(jsonized, safe=False)
-
+    try:
+        items = List.objects.all().order_by('due_date')
+        jsonized = [{'id': i.id, 'title': i.name(), 'done': i.is_done,
+                     'due': i.due_date.strftime('%Y-%m-%d')} for i in items]
+        return JsonResponse(jsonized, safe=False)
+    except Exception as e:
+        print(e)
+        raise e
 
 @csrf_exempt
 def add_list_item(request):
