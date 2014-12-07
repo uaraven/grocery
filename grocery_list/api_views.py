@@ -26,8 +26,8 @@ def add_list_item(request):
                 List.add(list_item['title'], dt)
 
             return HttpResponse('')
-        except:
-            pass
+        except Exception as e:
+            print(e)
     return HttpResponseBadRequest("Bad request")
 
 
@@ -40,8 +40,8 @@ def set_done(request):
             list_item.is_done = params['checked']
             list_item.save()
             return HttpResponse('')
-        except:
-            pass
+        except Exception as e:
+            print(e)
     return HttpResponseBadRequest("Bad request")
 
 
@@ -53,8 +53,8 @@ def suggest(request):
             matching = History.objects.filter(record_name__istartswith=params['text'])
             jsonized = [i.record_name for i in matching]
             return JsonResponse(jsonized, safe=False)
-        except:
-            pass
+        except Exception as e:
+            print(e)
     return HttpResponseBadRequest("Bad request")
 
 
@@ -66,7 +66,7 @@ def delete(request):
             matching = List.objects.get(id=params['id'])
             matching.delete()
             return HttpResponse('')
-        except:
-            pass
+        except Exception as e:
+            print(e)
     return HttpResponseBadRequest("Bad request")
 
