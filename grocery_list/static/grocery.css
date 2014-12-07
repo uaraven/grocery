@@ -51,7 +51,7 @@ div.action {
 
 input#new_list_item {
     display: inline-block;
-    width: 70%;
+    width: 60%;
     height: 30px;
     vertical-align: middle;
 }
